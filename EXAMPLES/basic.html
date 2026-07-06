@@ -1,0 +1,27 @@
+<!-- 1. The Human-Visible Content -->
+<h1>Token Efficiency in AI</h1>
+<p>Implementing structured data reduces server load significantly [a1]. This is the primary benefit of the protocol.</p>
+
+<!-- 2. The Visual Citation Link (Anchor) -->
+<a href="#a1" class="acp-marker">[a1]</a>
+
+<!-- 3. The Machine-Readable Layer (JSON-LD) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Token Efficiency in AI",
+  "articleSection": [
+    {
+      "@id": "#a1",
+      "name": "Answer Citation a1",
+      "text": "Implementing structured data reduces server load and token consumption by allowing LLMs to retrieve concise answers instead of processing full page DOM."
+    }
+  ]
+}
+</script>
+
+<style>
+/* Optional: Hide the answer div visually, but keep it in DOM */
+.acp-answer { display: none; } 
+</style>
