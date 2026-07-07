@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use this protocol in your work, please cite it as follows:"
+title: "The Answer Citation Protocol (ACP)"
+type: software
+authors:
+  - family-names: Strate
+    given-names: Eric
+    orcid: 0009-0004-4504-5103
+date-released: 2026-07-07
+url: https://github.com/EricStr8/answer-citation-protocol
+license: MIT
