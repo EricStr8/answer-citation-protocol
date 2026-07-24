@@ -8,20 +8,40 @@
 <!-- 3. The Machine-Readable Layer (JSON-LD) -->
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org",
+  "@context": [
+    "https://schema.org",
+    {
+      "wacp": "https://wacp.schema.org/",
+      "acpSignature": "wacp:acpSignature"
+    }
+  ],
   "@type": "Article",
   "headline": "Token Efficiency in AI",
-  "articleSection": [
-    {
-      "@id": "#a1",
-      "name": "Answer Citation a1",
-      "text": "Implementing structured data reduces server load and token consumption by allowing LLMs to retrieve concise answers instead of processing full page DOM."
-    }
-  ]
+  "author": {
+    "@type": "Person",
+    "name": "Eric Strate"
+  },
+  "wacp:itemListElement": {
+    "@type": "ItemList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@type": "DefinedTerm",
+          "@id": "#a1",
+          "name": "Answer Citation",
+          "description": "Implementing structured data reduces server load and token consumption by allowing LLMs to retrieve concise answers instead of processing full page DOM.",
+          "url": "https://example.com/basic",
+          "wacp:acpSignature": "0x..."
+        }
+      }
+    ]
+  }
 }
 </script>
 
 <style>
 /* Optional: Hide the answer div visually, but keep it in DOM */
-.acp-answer { display: none; } 
+.acp-answer { display: none; }
 </style>
