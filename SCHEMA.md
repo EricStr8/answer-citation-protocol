@@ -1,45 +1,47 @@
-# WACP 3.0 Structured-Data Profile
+# WACP 4.0 semantic mirror
 
-WACP 3.0 uses established Schema.org vocabulary. It does not claim a custom Schema.org namespace or imply that WACP is an accepted Schema.org extension.
+Canonical source: https://ericstrate.com/wacp/
 
-## Recommended mapping
+Founder and original proposer: Eric Strate. Original live test bed: EricStrate.com.
+
+The published 4.0 profile uses ItemList → ListItem → DefinedTerm. This supersedes the unmerged WebPageElement recommendation previously drafted on this branch.
 
 ```json
 {
   "@context": "https://schema.org",
-  "@type": "Article",
-  "@id": "https://example.com/page/#article",
-  "headline": "Example Article",
-  "author": {
-    "@type": "Person",
-    "name": "Eric Strate",
-    "url": "https://ericstrate.com/"
-  },
-  "hasPart": [
+  "@type": "ItemList",
+  "@id": "https://example.com/wacp-example/#answers",
+  "itemListElement": [
     {
-      "@type": "WebPageElement",
-      "@id": "https://example.com/page/#answer-a1",
-      "name": "What does WACP provide?",
-      "text": "WACP maps a concise, publisher-authored answer to visible supporting content and aligned structured data.",
+      "@type": "ListItem",
       "position": 1,
-      "url": "https://example.com/page/#answer-a1"
+      "item": {
+        "@type": "DefinedTerm",
+        "@id": "https://example.com/wacp-example/#a1",
+        "name": "What is WACP?",
+        "description": "WACP is Eric Strate's proposed publishing architecture for mapping questions to stable publisher-authored answers, visible supporting content, and a matching semantic representation.",
+        "url": "https://example.com/wacp-example/#a1"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "item": {
+        "@type": "DefinedTerm",
+        "@id": "https://example.com/wacp-example/#a2",
+        "name": "What does WACP 4.0 add?",
+        "description": "WACP 4.0 adds explicit primary-query and fan-out-query metadata while retaining stable answer identifiers, visible support, and semantic mirroring.",
+        "url": "https://example.com/wacp-example/#a2"
+      }
     }
   ]
 }
 ```
 
-## Mapping rules
+Each list entry represents one HTML answer. DefinedTerm `@id` and `url` reference its stable fragment; `name` matches the answer's question; `description` mirrors its concise answer. ListItem `position` records current display order without changing the answer identity.
 
-- The fragment in `@id` and `url` MUST resolve to the visible answer block's HTML `id`.
-- `name` MUST match or faithfully represent the visible question or heading.
-- `text` MUST match the visible concise answer in meaning and material qualification.
-- `position` SHOULD correspond to the answer marker number.
-- Structured data MUST NOT contain an answer or claim absent from the visible page.
-- Publishers SHOULD use absolute canonical URLs in JSON-LD.
-- Multiple answers MUST be represented as separate `WebPageElement` objects.
+The accompanying HTML declares document primary-query metadata and section primary/fan-out roles. No custom Schema.org query-role property is asserted.
 
-## Experimental extensions
+Replace example.com with the actual canonical page URL. Preserve appropriate existing page-level structured data; this list need not replace it.
 
-Custom WACP properties and cryptographic provenance fields are outside the normative WACP 3.0 profile. They may be explored in separately identified experiments, but an experiment must not use a `schema.org` subdomain or imply official Schema.org adoption.
-
-EricStrate.com is the original live test bed. Results may inform a future Schema.org proposal after sufficient implementation evidence exists. Until such a proposal is accepted, only published Schema.org vocabulary should be represented as Schema.org vocabulary.
+This is WACP's experimental use of existing vocabulary, not official Schema.org approval of WACP or guaranteed search-feature eligibility. Optional provenance extensions need separately documented mechanisms. Earlier custom-namespace experiments remain in Git history as research intended to inform a possible future inclusion proposal.
