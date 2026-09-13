@@ -1,67 +1,122 @@
 #!/usr/bin/env python3
+"""Structural repository checks; not a general WACP or Schema.org validator."""
 import json
-import pathlib
 import re
+from html.parser import HTMLParser
+from pathlib import Path
 
+ROOT = Path(__file__).resolve().parents[1]
 
-ROOT = pathlib.Path(__file__).resolve().parents[1]
-EXPECTED_VERSION = "3.0.0"
+class Page(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.ids = []
+        self.answers = []
+        self.primary = None
+        self.role = None
+        self.current = None
+        self.capture = None
+        self.script = ""
+        self.in_json = False
+        self.supports = 0
+        self.details = 0
 
+    def handle_starttag(self, tag, attrs):
+        a = dict(attrs)
+        if "id" in a:
+            self.ids.append(a["id"])
+        if a.get("data-wacp-document") == "true":
+            assert a["data-wacp-version"] == "4.0"
+            assert self.primary is None, "Multiple WACP documents in example"
+            self.primary = a["data-primary-query"]
+        if a.get("data-wacp-section") == "true":
+            self.role = a["data-query-role"]
+        if a.get("data-wacp") == "answer":
+            assert a["data-wacp-version"] == "4.0"
+            assert a["id"] == a["data-answer-id"]
+            self.current = dict(id=a["id"], question=a["data-query"],
+                                role=self.role, text="")
+            self.answers.append(self.current)
+        if a.get("data-wacp-answer-text") == "true":
+            self.capture = tag
+        if a.get("data-wacp-support") == "true":
+            self.supports += 1
+        if tag == "details":
+            self.details += 1
+        if tag == "script" and a.get("type") == "application/ld+json":
+            self.in_json = True
 
-def require(condition: bool, message: str) -> None:
-    if not condition:
-        raise AssertionError(message)
+    def handle_data(self, data):
+        if self.in_json:
+            self.script += data
+        if self.capture:
+            self.current["text"] += data
 
+    def handle_endtag(self, tag):
+        if tag == self.capture:
+            self.capture = None
+        if tag == "script":
+            self.in_json = False
 
-def extract_json_ld(html: str) -> dict:
-    match = re.search(
-        r'<script\s+type="application/ld\+json">\s*(\{.*?\})\s*</üsscript>',
-        html,
-        flags=re.DOTALL,
-    )
-    if match is None:
-        match = re.search(
-            r'<script\s+type="application/ld\+json">\s*(\{.*?\})\s*</script>',
-            html,
-            flags=re.DOTALL,
-        )
-    require(match is not None, "EXAMPLES/basic.html must contain JSON-LD")
-    return json.loads(match.group(1))
+def validate(html):
+    page = Page()
+    page.feed(html)
+    assert page.primary, "Missing primary query"
+    assert len(page.ids) == len(set(page.ids)), "Duplicate IDs"
+    assert len(page.answers) >= 2, "Example must exercise primary and fan-out"
+    assert {a["role"] for a in page.answers} == {"primary", "fan-out"}
+    assert page.supports == len(page.answers), "Missing supporting blocks"
+    assert page.details == len(page.answers), "Missing native disclosure"
+    payload = json.loads(page.script)
+    assert payload["@context"] == "https://schema.org"
+    assert payload["@type"] == "ItemList"
+    entries = payload["itemListElement"]
+    assert len(entries) == len(page.answers), "Mirror count differs"
+    for position, (answer, entry) in enumerate(zip(page.answers, entries), 1):
+        assert entry["@type"] == "ListItem"
+        assert entry["position"] == position
+        item = entry["item"]
+        assert item["@type"] == "DefinedTerm"
+        assert item["@id"] == item["url"]
+        assert item["@id"].split("#")[-1] == answer["id"]
+        assert item["name"] == answer["question"]
+        assert item["description"] == answer["text"].strip(), "Answer text mismatch"
+        if answer["role"] == "primary":
+            assert answer["question"] == page.primary
+    return payload
 
-
-def main() -> None:
-    readme = (ROOT / "README.md").read_text(encoding="utf-8")
-    schema_text = (ROOT / "SCHEMA.md").read_text(encoding="utf-8")
-    example = (ROOT / "EXAMPLES" / "basic.html").read_text(encoding="utf-8")
-    citation = (ROOT / "CITATION.cff").read_text(encoding="utf-8")
-
-    require(f"Version: {EXPECTED_VERSION}" in readme, "README version is stale")
-    require(f"version: {EXPECTED_VERSION}" in citation, "CITATION version is stale")
-    require("Eric Strate" in readme, "README must credit founder Eric Strate")
-    require("EricStrate.com" in readme, "README must identify EricStrate.com as the test bed")
-    require("independent" in readme.lower(), "README must disclose independent status")
-    require("not an official" in readme.lower(), "README must disclaim platform endorsement")
-    require("future" in readme.lower() and "Schema.org" in readme, "README must explain the future Schema.org proposal")
-    require("wacp.schema.org" not in schema_text + example, "Do not claim the Schema.org namespace")
-    require("acpSignature" not in schema_text + example, "Unimplemented signatures must not be normative")
-
-    fenced = re.search(r"```json\s*(\{.*?\})\s*```", schema_text, flags=re.DOTALL)
-    require(fenced is not None, "SCHEMA.md must contain a fenced JSON example")
-    schema_json = json.loads(fenced.group(1))
-    example_json = extract_json_ld(example)
-
-    for payload, label in ((schema_json, "SCHEMA.md"), (example_json, "basic.html")):
-        require(payload.get("@context") == "https://schema.org", f"{label} must use Schema.org context")
-        parts = payload.get("hasPart", [])
-        require(parts and parts[0].get("@id", "").endswith("#answer-a1"), f"{label} must map answer-a1")
-        require(parts[0].get("text"), f"{label} must include answer text")
-
-    require('id="answer-a1"' in example, "Visible answer-a1 target is missing")
-    require('aria-controls="answer-content-a1"' in example, "Accessible answer control is missing")
-    require('id="answer-content-a1"' in example, "Visible answer content is missing")
-
-    print("WACP repository validation passed")
-
+def main():
+    html = (ROOT / "EXAMPLES/basic.html").read_text()
+    payload = validate(html)
+    schema = (ROOT / "SCHEMA.md").read_text()
+    assert json.loads(re.search(r"```json\s*(.*?)\s*```", schema, re.S).group(1)) == payload
+    readme = (ROOT / "README.md").read_text()
+    citation = (ROOT / "CITATION.cff").read_text()
+    history = (ROOT / "CHANGELOG.md").read_text()
+    assert "Version: 4.0.0" in readme and "version: 4.0.0" in citation
+    assert "date-released:" not in citation
+    assert "Unreleased" in history
+    assert "Eric Strate" in readme and "EricStrate.com" in readme
+    assert "https://ericstrate.com/wacp/" in citation
+    assert "family-names: Strate" in citation and "given-names: Eric" in citation
+    assert "future" in readme and "Schema.org" in readme
+    assert "wacp.schema.org" not in html + schema
+    # Negative controls: each corrupted example must fail.
+    mutations = [
+        html.replace('id="a2"', 'id="a1"'),
+        html.replace('data-primary-query="What is WACP?"', ''),
+        html.replace('data-query-role="fan-out"', 'data-query-role="primary"'),
+        html.replace('<p data-wacp-answer-text="true">WACP', '<p data-wacp-answer-text="true">Changed'),
+        html.replace('"position": 2', '"position": 1'),
+    ]
+    for mutation in mutations:
+        try:
+            validate(mutation)
+        except (AssertionError, KeyError):
+            pass
+        else:
+            raise AssertionError("Negative control incorrectly passed")
+    print("PASS: WACP 4.0 example mappings, metadata, history; 5 negative controls")
 
 if __name__ == "__main__":
     main()
