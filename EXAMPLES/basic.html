@@ -1,47 +1,59 @@
-<!-- 1. The Human-Visible Content -->
-<h1>Token Efficiency in AI</h1>
-<p>Implementing structured data reduces server load significantly [a1]. This is the primary benefit of the protocol.</p>
-
-<!-- 2. The Visual Citation Link (Anchor) -->
-<a href="#a1" class="acp-marker">[a1]</a>
-
-<!-- 3. The Machine-Readable Layer (JSON-LD) -->
-<script type="application/ld+json">
-{
-  "@context": [
-    "https://schema.org",
-    {
-      "wacp": "https://wacp.schema.org/",
-      "acpSignature": "wacp:acpSignature"
-    }
-  ],
-  "@type": "Article",
-  "headline": "Token Efficiency in AI",
-  "author": {
-    "@type": "Person",
-    "name": "Eric Strate"
-  },
-  "wacp:itemListElement": {
-    "@type": "ItemList",
-    "itemListElement": [
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WACP 3.0 Basic Example</title>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "@id": "https://example.com/wacp-example/#article",
+    "headline": "WACP 3.0 Basic Example",
+    "author": {
+      "@type": "Person",
+      "name": "Eric Strate",
+      "url": "https://ericstrate.com/"
+    },
+    "hasPart": [
       {
-        "@type": "ListItem",
+        "@type": "WebPageElement",
+        "@id": "https://example.com/wacp-example/#answer-a1",
+        "name": "What does WACP provide?",
+        "text": "WACP maps a concise, publisher-authored answer to visible supporting content and aligned structured data.",
         "position": 1,
-        "item": {
-          "@type": "DefinedTerm",
-          "@id": "#a1",
-          "name": "Answer Citation",
-          "description": "Implementing structured data reduces server load and token consumption by allowing LLMs to retrieve concise answers instead of processing full page DOM.",
-          "url": "https://example.com/basic",
-          "wacp:acpSignature": "0x..."
-        }
+        "url": "https://example.com/wacp-example/#answer-a1"
       }
     ]
   }
-}
-</script>
-
-<style>
-/* Optional: Hide the answer div visually, but keep it in DOM */
-.acp-answer { display: none; }
-</style>
+  </script>
+</head>
+<body>
+  <main>
+    <article aria-labelledby="page-title">
+      <h1 id="page-title">WACP 3.0 Basic Example</h1>
+      <section class="wacp-answer-block" id="answer-a1">
+        <h2>
+          What does WACP provide?
+          <button type="button" class="wacp-marker"
+            aria-expanded="false" aria-controls="answer-content-a1">a1</button>
+        </h2>
+        <div class="wacp-answer" id="answer-content-a1" hidden>
+          <p>WACP maps a concise, publisher-authored answer to visible supporting content and aligned structured data.</p>
+        </div>
+        <p>WACP gives an answer a stable fragment identifier and keeps its visible wording aligned with its machine-readable representation. Supporting prose supplies context and evidence.</p>
+      </section>
+    </article>
+  </main>
+  <script>
+    document.querySelectorAll('.wacp-marker').forEach((button) => {
+      button.addEventListener('click', () => {
+        const answer = document.getElementById(button.getAttribute('aria-controls'));
+        const expanded = button.getAttribute('aria-expanded') === 'true';
+        button.setAttribute('aria-expanded', String(!expanded));
+        answer.hidden = expanded;
+      });
+    });
+  </script>
+</body>
+</html>
