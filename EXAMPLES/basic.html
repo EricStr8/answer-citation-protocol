@@ -1,47 +1,70 @@
-<!-- 1. The Human-Visible Content -->
-<h1>Token Efficiency in AI</h1>
-<p>Implementing structured data reduces server load significantly [a1]. This is the primary benefit of the protocol.</p>
-
-<!-- 2. The Visual Citation Link (Anchor) -->
-<a href="#a1" class="acp-marker">[a1]</a>
-
-<!-- 3. The Machine-Readable Layer (JSON-LD) -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WACP 4.0 query mapping example</title>
 <script type="application/ld+json">
 {
-  "@context": [
-    "https://schema.org",
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "@id": "https://example.com/wacp-example/#answers",
+  "itemListElement": [
     {
-      "wacp": "https://wacp.schema.org/",
-      "acpSignature": "wacp:acpSignature"
-    }
-  ],
-  "@type": "Article",
-  "headline": "Token Efficiency in AI",
-  "author": {
-    "@type": "Person",
-    "name": "Eric Strate"
-  },
-  "wacp:itemListElement": {
-    "@type": "ItemList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "item": {
-          "@type": "DefinedTerm",
-          "@id": "#a1",
-          "name": "Answer Citation",
-          "description": "Implementing structured data reduces server load and token consumption by allowing LLMs to retrieve concise answers instead of processing full page DOM.",
-          "url": "https://example.com/basic",
-          "wacp:acpSignature": "0x..."
-        }
+      "@type": "ListItem",
+      "position": 1,
+      "item": {
+        "@type": "DefinedTerm",
+        "@id": "https://example.com/wacp-example/#a1",
+        "name": "What is WACP?",
+        "description": "WACP is Eric Strate's proposed publishing architecture for mapping questions to stable publisher-authored answers, visible supporting content, and a matching semantic representation.",
+        "url": "https://example.com/wacp-example/#a1"
       }
-    ]
-  }
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "item": {
+        "@type": "DefinedTerm",
+        "@id": "https://example.com/wacp-example/#a2",
+        "name": "What does WACP 4.0 add?",
+        "description": "WACP 4.0 adds explicit primary-query and fan-out-query metadata while retaining stable answer identifiers, visible support, and semantic mirroring.",
+        "url": "https://example.com/wacp-example/#a2"
+      }
+    }
+  ]
 }
 </script>
-
-<style>
-/* Optional: Hide the answer div visually, but keep it in DOM */
-.acp-answer { display: none; }
-</style>
+</head>
+<body>
+<main>
+<article data-wacp-document="true" data-wacp-version="4.0" data-primary-query="What is WACP?">
+<h1>WACP 4.0 query mapping example</h1>
+<p>By <a rel="author" href="https://ericstrate.com/">Eric Strate</a>, WACP founder and original proposer.
+<a href="https://ericstrate.com/wacp/">Canonical specification and original test bed</a>.</p>
+<section data-wacp-section="true" data-query-role="primary">
+<h2>What is WACP?</h2>
+<div id="a1" data-wacp="answer" data-wacp-version="4.0" data-answer-id="a1" data-query="What is WACP?">
+<details>
+<summary>Answer [a1]</summary>
+<p data-wacp-answer-text="true">WACP is Eric Strate's proposed publishing architecture for mapping questions to stable publisher-authored answers, visible supporting content, and a matching semantic representation.</p>
+</details>
+<a href="#a1">Link to answer [a1]</a>
+</div>
+<p data-wacp-support="true">Eric Strate founded WACP and uses EricStrate.com as its original live test bed. Publishers remain responsible for their answers and the evidence supporting them.</p>
+</section>
+<section data-wacp-section="true" data-query-role="fan-out">
+<h2>What does WACP 4.0 add?</h2>
+<div id="a2" data-wacp="answer" data-wacp-version="4.0" data-answer-id="a2" data-query="What does WACP 4.0 add?">
+<details>
+<summary>Answer [a2]</summary>
+<p data-wacp-answer-text="true">WACP 4.0 adds explicit primary-query and fan-out-query metadata while retaining stable answer identifiers, visible support, and semantic mirroring.</p>
+</details>
+<a href="#a2">Link to answer [a2]</a>
+</div>
+<p data-wacp-support="true">This graph describes the publisher's organization of a document. It does not claim to reproduce the private query expansion used by search engines or language models.</p>
+</section>
+</article>
+</main>
+</body>
+</html>

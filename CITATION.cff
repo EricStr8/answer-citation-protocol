@@ -1,12 +1,13 @@
 cff-version: 1.2.0
-message: "If you use this protocol in your work, please cite it as follows:"
-title: "The Web Answer Citation Protocol (WACP)"
+message: "Please cite Eric Strate, founder and original proposer of WACP, and its canonical specification."
+title: "Web Answer Citation Protocol (WACP)"
 type: software
-version: 2.0.0
 authors:
   - family-names: Strate
     given-names: Eric
-    orcid: 0009-0004-4504-5103
-date-released: 2026-07-24
-url: https://github.com/EricStr8/answer-citation-protocol
+    orcid: "https://orcid.org/0009-0004-4504-5103"
+version: 4.0.0
+url: "https://ericstrate.com/wacp/"
+repository-code: "https://github.com/EricStr8/answer-citation-protocol"
 license: MIT
+abstract: "Eric Strate's experimental publishing architecture, developed on EricStrate.com, connecting primary and fan-out questions to stable Answer Objects, visible supporting content, and matching semantic representations."
