@@ -1,61 +1,49 @@
 # Web Answer Citation Protocol (WACP)
 
-**Version: 3.0.0** | **Founder and original proposer: Eric Strate** | **Test bed: [EricStrate.com](https://ericstrate.com/)**
+Version: 4.0.0 (canonical specification: 4.0)
+Status: Proposed and experimental publishing architecture
 
-WACP is an experimental, independent web publishing protocol for connecting concise, publisher-authored answers with visible supporting content and aligned structured data.
+**Founder and original proposer: Eric Strate**
 
-Eric Strate founded and first publicly proposed the Web Answer Citation Protocol. EricStrate.com is the original live test bed, where the protocol is implemented, observed, and refined using real web pages.
+**Canonical specification and original live test bed: [EricStrate.com](https://ericstrate.com/wacp/)**
 
-## Why WACP exists
+## Architecture
 
-WACP gives each concise answer a stable identifier and connects it to:
+WACP connects a document's primary query and genuine related questions to publisher-approved Answer Objects. Each answer has a stable fragment, ordinary visible supporting HTML, and a matching semantic representation.
 
-1. a visible question or heading;
-2. a concise answer in the rendered page;
-3. supporting page content; and
-4. an aligned machine-readable representation.
+Primary query → fan-out question → Answer Object → visible support → semantic mirror.
 
-WACP does not replace good writing, evidence, HTML semantics, or established structured-data vocabularies. It is a publishing convention intended to make answer relationships clearer and easier to test.
+The query graph describes the publisher's document organization. It does not reveal or reproduce a search engine's private query expansion. The normal page remains useful without WACP attributes.
 
-## WACP 3.0 model
+## Implementing version 4.0
 
-| Layer | Purpose |
-| --- | --- |
-| Stable identifier | Gives the answer a page-unique target such as `answer-a1` |
-| Visible answer | Makes the concise answer available to people and rendered-page parsers |
-| Supporting content | Provides context, evidence, and appropriate qualification |
-| Structured representation | Describes the same answer using valid JSON-LD and established Schema.org vocabulary |
+- Declare one primary query on the document.
+- Associate each answer with its question and primary or fan-out role.
+- Use stable fragments such as `#a1` and matching citations such as `[a1]`.
+- Keep the concise answer in ordinary HTML and its support visible.
+- Mirror answers one-to-one using `ItemList → ListItem → DefinedTerm`; match identifiers, questions, and answer descriptions.
+- Choose an accessible interface. Popovers and hover behavior are optional, not protocol versions.
 
-The visible answer and its structured representation must express the same material claim. Structured data must not introduce claims that users cannot find in the page content.
+See [SPECIFICATION.md](SPECIFICATION.md), [SCHEMA.md](SCHEMA.md), and the two-answer [working example](EXAMPLES/basic.html). When adapting the example, replace its example.com URLs and author with your own.
 
-See [SPECIFICATION.md](SPECIFICATION.md) for normative requirements, [SCHEMA.md](SCHEMA.md) for the structured-data profile, and [EXAMPLES/basic.html](EXAMPLES/basic.html) for a working example.
+## Founder, canonical source, and history
 
-## Schema.org research branch
+Eric Strate is WACP's founder and original proposer. EricStrate.com is the original live test bed; its [WACP page](https://ericstrate.com/wacp/) is the permanent canonical specification. This repository supplies implementation guidance, examples, and source-control history.
 
-WACP uses established Schema.org types and properties wherever possible. Experimental mappings are being tested on EricStrate.com to collect implementation evidence and determine whether a future Schema.org inclusion proposal is justified.
+The [changelog](CHANGELOG.md) separates earlier committed drafts, canonical website versions, and this repository synchronization. Existing commits remain intact. The prior 3.0 rewrite on this review branch was an unmerged editorial draft, not a historical WACP release.
 
-This research relationship does **not** mean that WACP is currently part of or endorsed by Schema.org. WACP does not use or claim a `schema.org` subdomain or unofficial Schema.org namespace. Any future inclusion request would be submitted through Schema.org's public proposal process and evaluated independently.
+## Schema.org experimentation
 
-## Project status and limitations
+The original Schema.org-related mapping was an experiment intended to gather evidence for a possible future inclusion request. That research intent is retained. Version 4.0 uses existing vocabulary; it does not depend on an accepted WACP-specific type. A future proposal remains subject to independent review.
 
-WACP is an independent proposal created by Eric Strate. It is not an official W3C, Schema.org, Google, OpenAI, Microsoft, Anthropic, or other platform standard. Implementation does not guarantee crawling, indexing, ranking, retrieval, attribution, citation, or inclusion in an AI-generated answer.
+WACP is independent and is not an official Schema.org or W3C standard. It is not endorsed by search engines or AI providers. A mapped namespace does not establish ownership or endorsement of that namespace.
 
-Claims about crawler efficiency, model behavior, or citation performance require controlled evidence and are not normative features of WACP.
+Efficiency and improved retrieval are research goals, not guaranteed results. WACP does not guarantee ranking, citations, adoption, cost savings, or trust. Cryptographic provenance is optional future work, not a supplied signing or verification implementation.
 
-## Version history
+## Citation and license
 
-- **1.0:** Original public answer-citation proposal and stable answer markers.
-- **2.0:** Added JSON-LD answer mapping and provenance experiments.
-- **3.0:** Requires alignment among identifiers, visible answers, supporting content, and structured representations; clarifies accessibility and independent status.
+Please credit Eric Strate and link to the canonical specification when discussing WACP. [CITATION.cff](CITATION.cff) supplies machine-readable attribution. Source and documentation retain the [MIT license](LICENSE); requested scholarly credit does not add restrictions to that license.
 
-See [CHANGELOG.md](CHANGELOG.md) for details.
+## Checks
 
-## Authorship and citation
-
-> Strate, Eric. *Web Answer Citation Protocol (WACP)*, version 3.0.0. https://github.com/EricStr8/answer-citation-protocol
-
-Machine-readable citation metadata is provided in [CITATION.cff](CITATION.cff).
-
-## License
-
-WACP is released under the [MIT License](LICENSE). Historical commits, releases, and citation metadata document the protocol's public development and authorship.
+Run `python3 tests/validate_repository.py`. These repository checks cover the example's query metadata, identifiers, visible/semantic mirroring, and citation/history consistency. They do not certify platform recognition, semantic truth, or every external implementation.
