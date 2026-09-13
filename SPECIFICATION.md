@@ -1,58 +1,41 @@
-# Web Answer Citation Protocol 3.0 Specification
+# WACP 4.0 implementation specification
 
-## 1. Status
+Founder and original proposer: Eric Strate. Canonical source and original test bed: https://ericstrate.com/wacp/
 
-WACP is an experimental, independent protocol founded and originally proposed by Eric Strate. EricStrate.com is its original live implementation and test bed. WACP 3.0 is not an official standard or an endorsement signal from any search engine, AI system, W3C, or Schema.org.
+This document synchronizes repository guidance to the canonical 4.0 page reviewed September 13, 2026. The canonical page governs version meaning; this is not a replacement standard.
 
-The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT**, and **MAY** indicate requirement levels within this specification.
+## Required relationships
 
-## 2. Conformance model
+A WACP document identifies one primary query. Each Answer Object identifies the question it resolves and whether that question is primary or fan-out. Fan-out questions must be legitimate related questions supported by the page.
 
-A conforming WACP answer consists of a page-unique answer number, a stable HTML identifier, a visible question or heading, a concise answer in the rendered DOM, same-page supporting content, and an aligned structured-data entity when JSON-LD is used.
+Every object has a unique stable fragment, such as `#a1`, a publisher-written or publisher-approved concise answer available in ordinary HTML, and visible supporting content. The answer must retain important qualifications and must not exaggerate or contradict its support.
 
-## 3. Identifiers and markers
+The semantic mirror references the same fragment and question. Its answer description must be substantively identical to the HTML answer; exact text mirroring is preferred. The page must remain useful when all WACP-specific attributes are ignored.
 
-- Answer numbers MUST be unique within a page and SHOULD follow document order: `a1`, `a2`, `a3`.
-- The answer block's HTML identifier MUST use `answer-aN`, where `N` is a positive integer.
-- A marker MAY display `aN` or `[aN]`.
-- An interactive marker MUST use a native `button` or equivalently accessible control.
-- It MUST expose state with `aria-expanded` and identify its region with `aria-controls`.
+## Reference HTML mapping
 
-## 4. Visible answer
+- Document: `data-wacp-document="true"`, `data-wacp-version="4.0"`, and `data-primary-query`.
+- Supporting section: `data-wacp-section="true"` and `data-query-role="primary"` or `"fan-out"`.
+- Answer: `id="a1"`, `data-wacp="answer"`, `data-wacp-version="4.0"`, `data-answer-id="a1"`, and `data-query`.
 
-- The concise answer MUST exist in the rendered DOM.
-- It MUST be understandable with its associated question or heading.
-- It SHOULD be one short paragraph. Fifty words is an editorial target, not a conformance limit.
-- It MAY be permanently visible or initially collapsed.
-- A collapsed answer MUST be available without a network request and accessible by keyboard and touch.
-- Presentation MUST NOT cause the answer to exist only for crawlers.
+The primary answer's question matches the document primary query. Each answer's semantic question matches its `data-query`.
 
-## 5. Supporting content
+## Stable addressing
 
-- Supporting content MUST appear on the same page.
-- It MUST provide reasonable context, substantiation, explanation, or qualification.
-- It MUST NOT materially contradict the concise answer.
-- External evidence SHOULD be cited when the claim warrants it.
+Preserve a published answer's fragment across reordering. List positions may change with display order; identifiers must not be reassigned to unrelated answers. Marker numbers are identities, not a requirement to renumber every time content moves.
 
-## 6. Structured representation
+## Semantic mirror
 
-- JSON-LD is RECOMMENDED but not required for HTML-level conformance.
-- When present, it SHOULD use the profile in `SCHEMA.md`.
-- The structured answer MUST express the same material claim and qualifications as the visible answer.
-- Its identifier MUST resolve to the corresponding visible answer block.
-- It MUST NOT contain claims unavailable to users.
-- Experimental properties MUST use a namespace controlled by the publisher and MUST NOT imply another standards body's adoption.
+The canonical recommended profile is `ItemList` with ordered `ListItem` entries containing `DefinedTerm` objects. See SCHEMA.md. A standalone JSON-LD list is sufficient for the reference example; do not invent a Schema.org subdomain or a proprietary type.
 
-## 7. Multiple answers
+## Recommended and optional behavior
 
-Each answer MUST remain independently addressable. Reordering requires updating marker numbers, HTML identifiers, structured-data identifiers, URLs, and positions together.
+Prefer a concise paragraph without a fixed word limit. Keep citations keyboard/touch usable and allow navigation to supporting context. Visual style is not normative.
 
-## 8. Validation
+Popover, hover, signatures, hashes, and extra provenance metadata are optional. Basic conformance does not require cryptographic infrastructure. This repository's example uses native disclosure controls with no JavaScript dependency.
 
-A document passes when identifiers are unique; every control targets an existing region; every answer has supporting content; structured answers resolve to visible blocks; visible and structured answers align; and supplied interactions work with keyboard, touch, and pointer input.
+## Interpretation and completion
 
-WACP conformance does not predict or guarantee treatment by external platforms.
+The query graph is publisher-authored organization, not a claim about the internal queries used by Google, ChatGPT, or another system. Token efficiency requires measurement by consuming systems.
 
-## 9. Attribution and history
-
-Eric Strate is the founder and original proposer of WACP. Implementations MAY cite `CITATION.cff`. Git history and tagged releases provide the public version record.
+Check query-to-answer mappings, fragment uniqueness, visible support, semantic alignment, and desktop/mobile interactions together. Automated structural checks cannot establish the truth of an answer or replace manual content and accessibility review.
