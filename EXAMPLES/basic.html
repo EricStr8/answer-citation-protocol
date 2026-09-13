@@ -1,59 +1,70 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>WACP 3.0 Basic Example</title>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    "@id": "https://example.com/wacp-example/#article",
-    "headline": "WACP 3.0 Basic Example",
-    "author": {
-      "@type": "Person",
-      "name": "Eric Strate",
-      "url": "https://ericstrate.com/"
-    },
-    "hasPart": [
-      {
-        "@type": "WebPageElement",
-        "@id": "https://example.com/wacp-example/#answer-a1",
-        "name": "What does WACP provide?",
-        "text": "WACP maps a concise, publisher-authored answer to visible supporting content and aligned structured data.",
-        "position": 1,
-        "url": "https://example.com/wacp-example/#answer-a1"
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WACP 4.0 query mapping example</title>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "@id": "https://example.com/wacp-example/#answers",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "item": {
+        "@type": "DefinedTerm",
+        "@id": "https://example.com/wacp-example/#a1",
+        "name": "What is WACP?",
+        "description": "WACP is Eric Strate's proposed publishing architecture for mapping questions to stable publisher-authored answers, visible supporting content, and a matching semantic representation.",
+        "url": "https://example.com/wacp-example/#a1"
       }
-    ]
-  }
-  </script>
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "item": {
+        "@type": "DefinedTerm",
+        "@id": "https://example.com/wacp-example/#a2",
+        "name": "What does WACP 4.0 add?",
+        "description": "WACP 4.0 adds explicit primary-query and fan-out-query metadata while retaining stable answer identifiers, visible support, and semantic mirroring.",
+        "url": "https://example.com/wacp-example/#a2"
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body>
-  <main>
-    <article aria-labelledby="page-title">
-      <h1 id="page-title">WACP 3.0 Basic Example</h1>
-      <section class="wacp-answer-block" id="answer-a1">
-        <h2>
-          What does WACP provide?
-          <button type="button" class="wacp-marker"
-            aria-expanded="false" aria-controls="answer-content-a1">a1</button>
-        </h2>
-        <div class="wacp-answer" id="answer-content-a1" hidden>
-          <p>WACP maps a concise, publisher-authored answer to visible supporting content and aligned structured data.</p>
-        </div>
-        <p>WACP gives an answer a stable fragment identifier and keeps its visible wording aligned with its machine-readable representation. Supporting prose supplies context and evidence.</p>
-      </section>
-    </article>
-  </main>
-  <script>
-    document.querySelectorAll('.wacp-marker').forEach((button) => {
-      button.addEventListener('click', () => {
-        const answer = document.getElementById(button.getAttribute('aria-controls'));
-        const expanded = button.getAttribute('aria-expanded') === 'true';
-        button.setAttribute('aria-expanded', String(!expanded));
-        answer.hidden = expanded;
-      });
-    });
-  </script>
+<main>
+<article data-wacp-document="true" data-wacp-version="4.0" data-primary-query="What is WACP?">
+<h1>WACP 4.0 query mapping example</h1>
+<p>By <a rel="author" href="https://ericstrate.com/">Eric Strate</a>, WACP founder and original proposer.
+<a href="https://ericstrate.com/wacp/">Canonical specification and original test bed</a>.</p>
+<section data-wacp-section="true" data-query-role="primary">
+<h2>What is WACP?</h2>
+<div id="a1" data-wacp="answer" data-wacp-version="4.0" data-answer-id="a1" data-query="What is WACP?">
+<details>
+<summary>Answer [a1]</summary>
+<p data-wacp-answer-text="true">WACP is Eric Strate's proposed publishing architecture for mapping questions to stable publisher-authored answers, visible supporting content, and a matching semantic representation.</p>
+</details>
+<a href="#a1">Link to answer [a1]</a>
+</div>
+<p data-wacp-support="true">Eric Strate founded WACP and uses EricStrate.com as its original live test bed. Publishers remain responsible for their answers and the evidence supporting them.</p>
+</section>
+<section data-wacp-section="true" data-query-role="fan-out">
+<h2>What does WACP 4.0 add?</h2>
+<div id="a2" data-wacp="answer" data-wacp-version="4.0" data-answer-id="a2" data-query="What does WACP 4.0 add?">
+<details>
+<summary>Answer [a2]</summary>
+<p data-wacp-answer-text="true">WACP 4.0 adds explicit primary-query and fan-out-query metadata while retaining stable answer identifiers, visible support, and semantic mirroring.</p>
+</details>
+<a href="#a2">Link to answer [a2]</a>
+</div>
+<p data-wacp-support="true">This graph describes the publisher's organization of a document. It does not claim to reproduce the private query expansion used by search engines or language models.</p>
+</section>
+</article>
+</main>
 </body>
 </html>
