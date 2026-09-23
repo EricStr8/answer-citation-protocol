@@ -1,6 +1,6 @@
 # Web Answer Citation Protocol (WACP)
 
-Version: 4.0.0 (canonical specification: 4.0)
+Version: 5.0.0 (canonical specification: 5.0)
 Status: Proposed and experimental publishing architecture
 
 **Founder and original proposer: Eric Strate**
@@ -9,20 +9,21 @@ Status: Proposed and experimental publishing architecture
 
 ## Architecture
 
-WACP connects a document's primary query and genuine related questions to publisher-approved Answer Objects. Each answer has a stable fragment, ordinary visible supporting HTML, and a matching semantic representation.
+WACP connects a document's primary query and genuine related questions to publisher-approved Answer Objects. Each answer has a stable fragment, an explicitly addressable visible Support Object, and a matching semantic representation.
 
-Primary query → fan-out question → Answer Object → visible support → semantic mirror.
+Primary query → fan-out question → Answer Object → explicit Support Object → semantic mirror → conformance validation.
 
 The query graph describes the publisher's document organization. It does not reveal or reproduce a search engine's private query expansion. The normal page remains useful without WACP attributes.
 
-## Implementing version 4.0
+## Implementing version 5.0
 
 - Declare one primary query on the document.
 - Associate each answer with its question and primary or fan-out role.
 - Use stable fragments such as `#a1` and matching citations such as `[a1]`.
-- Keep the concise answer in ordinary HTML and its support visible.
+- Keep the concise answer in ordinary HTML and map it explicitly to visible support with a stable support identifier.
 - Mirror answers one-to-one using `ItemList → ListItem → DefinedTerm`; match identifiers, questions, and answer descriptions.
-- Choose an accessible interface. Popovers and hover behavior are optional, not protocol versions.
+- Choose an accessible interface. WACP 5.0 recommends small, uniform, link-colored citation markers with no decorative background and a larger invisible interaction target; presentation remains non-normative.
+- Validate identifier uniqueness, answer-to-support references, semantic parity, and broken references. WACP 5.0 recognizes Core, Semantic, and Interactive conformance profiles.
 
 See [SPECIFICATION.md](SPECIFICATION.md), [SCHEMA.md](SCHEMA.md), and the two-answer [working example](EXAMPLES/basic.html). When adapting the example, replace its example.com URLs and author with your own.
 
@@ -34,7 +35,7 @@ The [changelog](CHANGELOG.md) separates earlier committed drafts, canonical webs
 
 ## Schema.org experimentation
 
-The original Schema.org-related mapping was an experiment intended to gather evidence for a possible future inclusion request. That research intent is retained. Version 4.0 uses existing vocabulary; it does not depend on an accepted WACP-specific type. A future proposal remains subject to independent review.
+The original Schema.org-related mapping was an experiment intended to gather evidence for a possible future inclusion request. That research intent is retained. Version 5.0 uses existing vocabulary; it does not depend on an accepted WACP-specific type. A future proposal remains subject to independent review.
 
 WACP is independent and is not an official Schema.org or W3C standard. It is not endorsed by search engines or AI providers. A mapped namespace does not establish ownership or endorsement of that namespace.
 
