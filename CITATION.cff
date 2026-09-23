@@ -6,8 +6,8 @@ authors:
   - family-names: Strate
     given-names: Eric
     orcid: "https://orcid.org/0009-0004-4504-5103"
-version: 4.0.0
+version: 5.0.0
 url: "https://ericstrate.com/wacp/"
 repository-code: "https://github.com/EricStr8/answer-citation-protocol"
 license: MIT
-abstract: "Eric Strate's experimental publishing architecture, developed on EricStrate.com, connecting primary and fan-out questions to stable Answer Objects, visible supporting content, and matching semantic representations."
+abstract: "Eric Strate's experimental publishing architecture, developed on EricStrate.com, connecting primary and fan-out questions to stable Answer Objects, explicitly addressable visible Support Objects, matching semantic representations, and validator-oriented conformance rules."
