@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>WACP 4.0 query mapping example</title>
+<title>WACP 5.0 query and support mapping example</title>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -27,8 +27,8 @@
       "item": {
         "@type": "DefinedTerm",
         "@id": "https://example.com/wacp-example/#a2",
-        "name": "What does WACP 4.0 add?",
-        "description": "WACP 4.0 adds explicit primary-query and fan-out-query metadata while retaining stable answer identifiers, visible support, and semantic mirroring.",
+        "name": "What does WACP 5.0 add?",
+        "description": "WACP 5.0 retains the primary/fan-out query graph and adds explicit Answer-to-Support mapping, validator-oriented conformance rules, named conformance profiles, and a recommended low-visual-noise citation presentation profile.",
         "url": "https://example.com/wacp-example/#a2"
       }
     }
@@ -38,31 +38,31 @@
 </head>
 <body>
 <main>
-<article data-wacp-document="true" data-wacp-version="4.0" data-primary-query="What is WACP?">
-<h1>WACP 4.0 query mapping example</h1>
+<article data-wacp-document="true" data-wacp-version="5.0" data-primary-query="What is WACP?" data-wacp-support-map="true">
+<h1>WACP 5.0 query and support mapping example</h1>
 <p>By <a rel="author" href="https://ericstrate.com/">Eric Strate</a>, WACP founder and original proposer.
 <a href="https://ericstrate.com/wacp/">Canonical specification and original test bed</a>.</p>
 <section data-wacp-section="true" data-query-role="primary">
 <h2>What is WACP?</h2>
-<div id="a1" data-wacp="answer" data-wacp-version="4.0" data-answer-id="a1" data-query="What is WACP?">
+<div id="a1" data-wacp="answer" data-wacp-version="5.0" data-answer-id="a1" data-query="What is WACP?" data-support-ref="#support-a1">
 <details>
 <summary>Answer [a1]</summary>
 <p data-wacp-answer-text="true">WACP is Eric Strate's proposed publishing architecture for mapping questions to stable publisher-authored answers, visible supporting content, and a matching semantic representation.</p>
 </details>
 <a href="#a1">Link to answer [a1]</a>
 </div>
-<p data-wacp-support="true">Eric Strate founded WACP and uses EricStrate.com as its original live test bed. Publishers remain responsible for their answers and the evidence supporting them.</p>
+<p id="support-a1" data-wacp-support="true" data-supports-answer="a1">Eric Strate founded WACP and uses EricStrate.com as its original live test bed. Publishers remain responsible for their answers and the evidence supporting them.</p>
 </section>
 <section data-wacp-section="true" data-query-role="fan-out">
-<h2>What does WACP 4.0 add?</h2>
-<div id="a2" data-wacp="answer" data-wacp-version="4.0" data-answer-id="a2" data-query="What does WACP 4.0 add?">
+<h2>What does WACP 5.0 add?</h2>
+<div id="a2" data-wacp="answer" data-wacp-version="5.0" data-answer-id="a2" data-query="What does WACP 5.0 add?" data-support-ref="#support-a2">
 <details>
 <summary>Answer [a2]</summary>
-<p data-wacp-answer-text="true">WACP 4.0 adds explicit primary-query and fan-out-query metadata while retaining stable answer identifiers, visible support, and semantic mirroring.</p>
+<p data-wacp-answer-text="true">WACP 5.0 retains the primary/fan-out query graph and adds explicit Answer-to-Support mapping, validator-oriented conformance rules, named conformance profiles, and a recommended low-visual-noise citation presentation profile.</p>
 </details>
 <a href="#a2">Link to answer [a2]</a>
 </div>
-<p data-wacp-support="true">This graph describes the publisher's organization of a document. It does not claim to reproduce the private query expansion used by search engines or language models.</p>
+<p id="support-a2" data-wacp-support="true" data-supports-answer="a2">This graph describes the publisher's organization of a document. It does not claim to reproduce the private query expansion used by search engines or language models.</p>
 </section>
 </article>
 </main>
