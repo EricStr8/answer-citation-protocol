@@ -1,10 +1,10 @@
-# WACP 4.0 semantic mirror
+# WACP 5.0 semantic mirror
 
 Canonical source: https://ericstrate.com/wacp/
 
 Founder and original proposer: Eric Strate. Original live test bed: EricStrate.com.
 
-The published 4.0 profile uses ItemList → ListItem → DefinedTerm. This supersedes the unmerged WebPageElement recommendation previously drafted on this branch.
+The published 5.0 profile uses ItemList → ListItem → DefinedTerm. This supersedes the unmerged WebPageElement recommendation previously drafted on this branch.
 
 ```json
 {
@@ -29,8 +29,8 @@ The published 4.0 profile uses ItemList → ListItem → DefinedTerm. This super
       "item": {
         "@type": "DefinedTerm",
         "@id": "https://example.com/wacp-example/#a2",
-        "name": "What does WACP 4.0 add?",
-        "description": "WACP 4.0 adds explicit primary-query and fan-out-query metadata while retaining stable answer identifiers, visible support, and semantic mirroring.",
+        "name": "What does WACP 5.0 add?",
+        "description": "WACP 5.0 retains the 4.0 query graph and adds explicit Answer-to-Support mapping, validator-oriented conformance rules, named conformance profiles, and a recommended low-visual-noise citation presentation profile.",
         "url": "https://example.com/wacp-example/#a2"
       }
     }
@@ -40,7 +40,7 @@ The published 4.0 profile uses ItemList → ListItem → DefinedTerm. This super
 
 Each list entry represents one HTML answer. DefinedTerm `@id` and `url` reference its stable fragment; `name` matches the answer's question; `description` mirrors its concise answer. ListItem `position` records current display order without changing the answer identity.
 
-The accompanying HTML declares document primary-query metadata and section primary/fan-out roles. No custom Schema.org query-role property is asserted.
+The accompanying HTML declares document primary-query metadata, section primary/fan-out roles, and explicit Answer-to-Support relationships. No custom Schema.org query-role property is asserted.
 
 Replace example.com with the actual canonical page URL. Preserve appropriate existing page-level structured data; this list need not replace it.
 
