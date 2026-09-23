@@ -4,7 +4,11 @@ Founder and original proposer: Eric Strate. Original live test bed and canonical
 
 ## Repository synchronization — Unreleased
 
-This review branch synchronizes documentation and examples to canonical WACP 4.0. No GitHub release or tag is created by this change. The preceding 3.0 editorial rewrite on this branch was not a published protocol release and is superseded without rewriting its commits.
+This repository is synchronized to canonical WACP 5.0. No GitHub release or tag is created by this change. The preceding 3.0 editorial rewrite on this branch was not a published protocol release and is superseded without rewriting its commits.
+
+## WACP 5.0 — September 2026 (canonical website)
+
+WACP 5.0 retains the 4.0 publisher-authored query graph and adds explicit Answer-to-Support mapping, validator-oriented conformance requirements, named Core/Semantic/Interactive profiles, and a recommended low-visual-noise citation presentation profile. The citation style recommendation is non-normative; the structural support relationship and conformance rules are protocol changes.
 
 ## WACP 4.0 — September 2026 (canonical website)
 
