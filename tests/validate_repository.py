@@ -19,6 +19,8 @@ class Page(HTMLParser):
         self.script = ""
         self.in_json = False
         self.supports = 0
+        self.support_ids = set()
+        self.support_links = {}
         self.details = 0
 
     def handle_starttag(self, tag, attrs):
@@ -26,14 +28,16 @@ class Page(HTMLParser):
         if "id" in a:
             self.ids.append(a["id"])
         if a.get("data-wacp-document") == "true":
-            assert a["data-wacp-version"] == "4.0"
+            assert a["data-wacp-version"] == "5.0"
             assert self.primary is None, "Multiple WACP documents in example"
             self.primary = a["data-primary-query"]
         if a.get("data-wacp-section") == "true":
             self.role = a["data-query-role"]
         if a.get("data-wacp") == "answer":
-            assert a["data-wacp-version"] == "4.0"
+            assert a["data-wacp-version"] == "5.0"
             assert a["id"] == a["data-answer-id"]
+            assert a.get("data-support-ref"), "Missing explicit support reference"
+            self.support_links[a["id"]] = a["data-support-ref"].lstrip("#")
             self.current = dict(id=a["id"], question=a["data-query"],
                                 role=self.role, text="")
             self.answers.append(self.current)
@@ -41,6 +45,9 @@ class Page(HTMLParser):
             self.capture = tag
         if a.get("data-wacp-support") == "true":
             self.supports += 1
+            assert a.get("id"), "Support block needs a stable id"
+            assert a.get("data-supports-answer"), "Support block needs reverse answer mapping"
+            self.support_ids.add(a["id"])
         if tag == "details":
             self.details += 1
         if tag == "script" and a.get("type") == "application/ld+json":
@@ -66,6 +73,7 @@ def validate(html):
     assert len(page.answers) >= 2, "Example must exercise primary and fan-out"
     assert {a["role"] for a in page.answers} == {"primary", "fan-out"}
     assert page.supports == len(page.answers), "Missing supporting blocks"
+    assert set(page.support_links.values()) == page.support_ids, "Broken Answer-to-Support mapping"
     assert page.details == len(page.answers), "Missing native disclosure"
     payload = json.loads(page.script)
     assert payload["@context"] == "https://schema.org"
@@ -93,7 +101,7 @@ def main():
     readme = (ROOT / "README.md").read_text()
     citation = (ROOT / "CITATION.cff").read_text()
     history = (ROOT / "CHANGELOG.md").read_text()
-    assert "Version: 4.0.0" in readme and "version: 4.0.0" in citation
+    assert "Version: 5.0.0" in readme and "version: 5.0.0" in citation
     assert "date-released:" not in citation
     assert "Unreleased" in history
     assert "Eric Strate" in readme and "EricStrate.com" in readme
@@ -103,6 +111,7 @@ def main():
     assert "wacp.schema.org" not in html + schema
     # Negative controls: each corrupted example must fail.
     mutations = [
+        html.replace('data-support-ref="#support-a2"', 'data-support-ref="#missing"'),
         html.replace('id="a2"', 'id="a1"'),
         html.replace('data-primary-query="What is WACP?"', ''),
         html.replace('data-query-role="fan-out"', 'data-query-role="primary"'),
@@ -116,7 +125,7 @@ def main():
             pass
         else:
             raise AssertionError("Negative control incorrectly passed")
-    print("PASS: WACP 4.0 example mappings, metadata, history; 5 negative controls")
+    print("PASS: WACP 5.0 query/support mappings, metadata, history; 6 negative controls")
 
 if __name__ == "__main__":
     main()
