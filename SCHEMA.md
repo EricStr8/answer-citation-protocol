@@ -1,47 +1,158 @@
-# WACP 5.0 semantic mirror
+# WACP 6.0 machine-readable layers
 
 Canonical source: https://ericstrate.com/wacp/
 
 Founder and original proposer: Eric Strate. Original live test bed: EricStrate.com.
 
-The published 5.0 profile uses ItemList → ListItem → DefinedTerm. This supersedes the unmerged WebPageElement recommendation previously drafted on this branch.
+WACP 6.0 deliberately separates two machine-readable concerns:
+
+1. **Standard semantic JSON-LD** uses established Schema.org vocabulary to mirror visible content.
+2. **The WACP protocol map** uses ordinary `application/json` to express WACP-specific A → F → E relationships.
+
+This separation avoids inventing unsupported Schema.org properties for WACP-only concepts.
+
+## Standard JSON-LD
+
+The reference example represents A objects with `ItemList → ListItem → DefinedTerm` and visible F nodes with `Question → acceptedAnswer → Answer`.
 
 ```json
 {
   "@context": "https://schema.org",
-  "@type": "ItemList",
-  "@id": "https://example.com/wacp-example/#answers",
-  "itemListElement": [
+  "@graph": [
     {
-      "@type": "ListItem",
-      "position": 1,
-      "item": {
-        "@type": "DefinedTerm",
-        "@id": "https://example.com/wacp-example/#a1",
-        "name": "What is WACP?",
-        "description": "WACP is Eric Strate's proposed publishing architecture for mapping questions to stable publisher-authored answers, visible supporting content, and a matching semantic representation.",
-        "url": "https://example.com/wacp-example/#a1"
+      "@type": "ItemList",
+      "@id": "https://example.com/wacp-example/#answers",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "item": {
+            "@type": "DefinedTerm",
+            "@id": "https://example.com/wacp-example/#a1",
+            "name": "What is WACP?",
+            "description": "WACP is Eric Strate's proposed publishing architecture for concise publisher-authored answers, optional fan-out retrieval intents, visible addressable evidence, and aligned machine-readable representations.",
+            "url": "https://example.com/wacp-example/#a1"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "item": {
+            "@type": "DefinedTerm",
+            "@id": "https://example.com/wacp-example/#a2",
+            "name": "How does WACP 6.0 handle evidence?",
+            "description": "WACP 6.0 gives visible supporting evidence stable E identifiers so an F answer can point to the precise support it needs without requiring that evidence to be duplicated inside the F answer.",
+            "url": "https://example.com/wacp-example/#a2"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "Question",
+      "@id": "https://example.com/wacp-example/#a1-f1",
+      "url": "https://example.com/wacp-example/#a1-f1",
+      "name": "What is a WACP fan-out node?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "@id": "https://example.com/wacp-example/#a1-f1-answer",
+        "text": "A WACP fan-out node is a publisher-modeled secondary retrieval intent nested beneath a canonical Answer Object."
       }
     },
     {
-      "@type": "ListItem",
-      "position": 2,
-      "item": {
-        "@type": "DefinedTerm",
-        "@id": "https://example.com/wacp-example/#a2",
-        "name": "What does WACP 5.0 add?",
-        "description": "WACP 5.0 retains the 4.0 query graph and adds explicit Answer-to-Support mapping, validator-oriented conformance rules, named conformance profiles, and a recommended low-visual-noise citation presentation profile.",
-        "url": "https://example.com/wacp-example/#a2"
+      "@type": "Question",
+      "@id": "https://example.com/wacp-example/#a1-f2",
+      "url": "https://example.com/wacp-example/#a1-f2",
+      "name": "Does WACP claim to know an AI system's private fan-out queries?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "@id": "https://example.com/wacp-example/#a1-f2-answer",
+        "text": "No. WACP F nodes are publisher-authored retrieval hypotheses and do not claim to reproduce private system queries or ranking logic."
+      }
+    },
+    {
+      "@type": "Question",
+      "@id": "https://example.com/wacp-example/#a2-f1",
+      "url": "https://example.com/wacp-example/#a2-f1",
+      "name": "Can evidence live outside the F answer?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "@id": "https://example.com/wacp-example/#a2-f1-answer",
+        "text": "Yes. An E node can remain in normal visible supporting content and be referenced by stable ID from the F answer."
       }
     }
   ]
 }
 ```
 
-Each list entry represents one HTML answer. DefinedTerm `@id` and `url` reference its stable fragment; `name` matches the answer's question; `description` mirrors its concise answer. ListItem `position` records current display order without changing the answer identity.
+Each A `DefinedTerm` mirrors one visible canonical answer. Each F `Question.name` matches the visible F question, and each `acceptedAnswer.text` matches the visible focused F answer.
 
-The accompanying HTML declares document primary-query metadata, section primary/fan-out roles, and explicit Answer-to-Support relationships. No custom Schema.org query-role property is asserted.
+WACP does not require `FAQPage`, `QAPage`, or a custom Schema.org type.
 
-Replace example.com with the actual canonical page URL. Preserve appropriate existing page-level structured data; this list need not replace it.
+## WACP protocol map
 
-This is WACP's experimental use of existing vocabulary, not official Schema.org approval of WACP or guaranteed search-feature eligibility. Optional provenance extensions need separately documented mechanisms. Earlier custom-namespace experiments remain in Git history as research intended to inform a possible future inclusion proposal.
+The same page can expose protocol-specific relationships separately:
+
+```json
+{
+  "protocol": "WACP",
+  "version": "6.0",
+  "spec": "https://ericstrate.com/wacp/",
+  "page": "https://example.com/wacp-example/",
+  "terminology": {
+    "A": "canonical publisher answer",
+    "F": "publisher-modeled fan-out retrieval intent",
+    "E": "visible uniquely addressable evidence"
+  },
+  "designGoals": [
+    "minimum sufficient context",
+    "selective retrieval",
+    "semantic diversity",
+    "evidence mapping",
+    "progressive disclosure"
+  ],
+  "answers": [
+    {
+      "id": "a1",
+      "selector": "#a1",
+      "supportSelector": "#support-a1",
+      "queryIntent": "protocol definition",
+      "fanOut": [
+        {
+          "id": "a1-f1",
+          "question": "What is a WACP fan-out node?",
+          "answerSelector": "#a1-f1-answer",
+          "evidence": ["#a1-f1-e1"]
+        },
+        {
+          "id": "a1-f2",
+          "question": "Does WACP claim to know an AI system's private fan-out queries?",
+          "answerSelector": "#a1-f2-answer",
+          "evidence": ["#a1-f2-e1"]
+        }
+      ]
+    },
+    {
+      "id": "a2",
+      "selector": "#a2",
+      "supportSelector": "#support-a2",
+      "queryIntent": "evidence design",
+      "fanOut": [
+        {
+          "id": "a2-f1",
+          "question": "Can evidence live outside the F answer?",
+          "answerSelector": "#a2-f1-answer",
+          "evidence": ["#a2-f1-e1"]
+        }
+      ]
+    }
+  ]
+}
+```
+
+`spec` identifies the permanent WACP specification. `page` identifies the canonical implementation URL. They are separate because WACP can be implemented on pages other than the specification itself.
+
+The external USER QUESTION is conceptual and is not a required WACP map field. Per-answer `queryIntent` metadata describes the broad information need without pretending to enumerate infinite query phrasings.
+
+Replace `example.com` with the actual canonical implementation URL. Preserve appropriate existing page-level structured data; WACP's semantic objects do not need to replace it.
+
+This is WACP's experimental use of existing web vocabulary. It is not official Schema.org approval of WACP and does not imply search-feature eligibility or platform adoption.
