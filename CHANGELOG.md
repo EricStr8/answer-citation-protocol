@@ -1,10 +1,12 @@
-# WACP history
+# WARP history
 
-Founder and original proposer: Eric Strate. Original live test bed and canonical specification: https://ericstrate.com/wacp/
+Founder and original proposer: Eric Strate. Original live test bed and canonical specification: https://ericstrate.com/warp/
 
-## Repository synchronization — Unreleased
+## WARP naming transition — October 2026
 
-This repository is synchronized to canonical WACP 6.0. No GitHub release or tag is created by this synchronization. Existing repository history remains intact.
+The public protocol is now **WARP — Web Answer Retrieval Protocol**. Public-facing version numbers were retired; future revisions are recorded in this history rather than marketed as numbered protocol names. Earlier WACP revision names remain below as historical records.
+
+The A → F → E architecture introduced in WACP 6.0 became the baseline WARP architecture. Existing repository history remains intact.
 
 ## WACP 6.0 — September 2026 (canonical website)
 
