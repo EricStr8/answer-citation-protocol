@@ -7,7 +7,7 @@ from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
 EXAMPLE_URL="https://example.com/warp-example/"
-SPEC_URL="https://ericstrate.com/wacp/"
+SPEC_URL="https://ericstrate.com/warp/"
 
 class Page(HTMLParser):
     def __init__(self):
@@ -19,19 +19,19 @@ class Page(HTMLParser):
         a=dict(attrs)
         if "id" in a:self.ids.append(a["id"])
         if tag=="link" and a.get("rel")=="canonical":self.canonical=a.get("href")
-        if a.get("data-wacp-document")=="true":self.version=a.get("data-wacp-version");self.intent=a.get("data-primary-intent")
-        if a.get("data-wacp-section")=="true":self.role=a.get("data-query-role")
-        if a.get("data-wacp")=="answer":
-            assert a["id"]==a["data-answer-id"] and a["data-wacp-version"]=="6.0" and a.get("data-support-ref")
+        if a.get("data-warp-document")=="true":self.intent=a.get("data-primary-intent")
+        if a.get("data-warp-section")=="true":self.role=a.get("data-query-role")
+        if a.get("data-warp")=="answer":
+            assert a["id"]==a["data-answer-id"] and a.get("data-support-ref")
             self.support_links[a["id"]]=a["data-support-ref"].lstrip("#");self.a={"id":a["id"],"role":self.role,"text":""};self.answers.append(self.a)
-        if a.get("data-wacp-answer-text")=="true":self.cap_a=tag
-        if a.get("data-wacp")=="fanout":
+        if a.get("data-warp-answer-text")=="true":self.cap_a=tag
+        if a.get("data-warp")=="fanout":
             refs=[x.lstrip("#") for x in a.get("data-evidence-ref","").split() if x]
             self.f={"id":a["id"],"parent":a.get("data-parent-answer"),"question":a.get("data-query"),"answer_id":a["id"]+"-answer","text":"","evidence":refs};self.fanouts.append(self.f)
-        if a.get("data-wacp-fanout-answer-text")=="true":self.cap_f=tag
-        if a.get("data-wacp-evidence")=="true":
+        if a.get("data-warp-fanout-answer-text")=="true":self.cap_f=tag
+        if a.get("data-warp-evidence")=="true":
             self.eid=a["id"];self.evidence[self.eid]={"for":a.get("data-evidence-for"),"text":"","tag":tag};self.cap_e=tag
-        if a.get("data-wacp-support")=="true":self.support_ids.add(a["id"])
+        if a.get("data-warp-support")=="true":self.support_ids.add(a["id"])
         if tag=="script":self.stype=a.get("type");self.sid=a.get("id");self.stext=""
     def handle_data(self,data):
         if self.cap_a and self.a:self.a["text"]+=data
