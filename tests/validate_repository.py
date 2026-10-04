@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
-"""Structural checks for the WACP 6.0 reference example."""
+"""Structural checks for the WARP reference example."""
 import json,re
 from collections import Counter
 from html.parser import HTMLParser
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
-EXAMPLE_URL="https://example.com/wacp-example/"
+EXAMPLE_URL="https://example.com/warp-example/"
 SPEC_URL="https://ericstrate.com/wacp/"
 
 class Page(HTMLParser):
     def __init__(self):
-        super().__init__();self.ids=[];self.canonical=None;self.version=None;self.intent=None;self.role=None
+        super().__init__();self.ids=[];self.canonical=None;self.intent=None;self.role=None
         self.answers=[];self.a=None;self.cap_a=None;self.fanouts=[];self.f=None;self.cap_f=None
         self.evidence={};self.eid=None;self.cap_e=None;self.support_ids=set();self.support_links={}
         self.jsonld=[];self.wmap=None;self.stype=None;self.sid=None;self.stext=""
@@ -45,7 +45,7 @@ class Page(HTMLParser):
         if tag=="details" and self.f is not None:self.f=None
         if tag=="script" and self.stype:
             if self.stype=="application/ld+json":self.jsonld.append(json.loads(self.stext))
-            elif self.stype=="application/json" and self.sid=="wacp6-map":self.wmap=json.loads(self.stext)
+            elif self.stype=="application/json" and self.sid=="warp-map":self.wmap=json.loads(self.stext)
             self.stype=None;self.sid=None;self.stext=""
 
 def graph(scripts):
@@ -55,7 +55,7 @@ def graph(scripts):
 
 def validate(html):
     p=Page();p.feed(html);counts=Counter(p.ids)
-    assert p.canonical==EXAMPLE_URL and p.version=="6.0" and p.intent
+    assert p.canonical==EXAMPLE_URL and p.intent
     assert all(v==1 for v in counts.values())
     assert len(p.answers)>=2 and {"primary","supporting"}<={a["role"] for a in p.answers}
     assert set(p.support_links.values())==p.support_ids
@@ -69,7 +69,7 @@ def validate(html):
             assert eid in eids and p.evidence[eid]["for"]==f["id"] and p.evidence[eid]["text"].strip() and p.evidence[eid]["tag"]!="script"
     for qs in sibling.values():assert len(qs)==len(set(qs))
 
-    w=p.wmap;assert w and w["protocol"]=="WACP" and w["version"]=="6.0" and w["spec"]==SPEC_URL and w["page"]==p.canonical
+    w=p.wmap;assert w and w["protocol"]=="WARP" and "version" not in w and w["spec"]==SPEC_URL and w["page"]==p.canonical
     assert "userQuestion" not in w
     assert w["terminology"]=={"A":"canonical publisher answer","F":"publisher-modeled fan-out retrieval intent","E":"visible uniquely addressable evidence"}
     hf={f["id"]:f for f in p.fanouts};mapped=set()
@@ -98,24 +98,24 @@ def main():
     schema=(ROOT/"SCHEMA.md").read_text();blocks=[json.loads(x) for x in re.findall(r"```json\s*(.*?)\s*```",schema,re.S)]
     assert blocks[0]==scripts[0] and blocks[1]==w
     readme=(ROOT/"README.md").read_text();citation=(ROOT/"CITATION.cff").read_text();history=(ROOT/"CHANGELOG.md").read_text();spec=(ROOT/"SPECIFICATION.md").read_text()
-    assert "Version: 6.0.0" in readme and "version: 6.0.0" in citation and "WACP 6.0" in history
+    assert "Version:" not in readme and "version:" not in citation and "WACP 6.0" in history
     assert "A → F → E" in readme+history and "minimum sufficient context" in (readme+spec).lower()
     assert "`spec`" in spec and "`page`" in spec and "userQuestion" in spec and "date-released:" not in citation
     assert "Eric Strate" in readme and "EricStrate.com" in readme and SPEC_URL in citation
-    assert "family-names: Strate" in citation and "given-names: Eric" in citation and "wacp.schema.org" not in html+schema+spec
+    assert "family-names: Strate" in citation and "given-names: Eric" in citation and "warp.schema.org" not in html+schema+spec
     mutations=[
       html.replace('data-evidence-ref="#a2-f1-e1"','data-evidence-ref="#missing"'),
       html.replace('id="a1-f1-e1"','id="a1-f2-e1"'),
       html.replace('"queryIntent": "evidence design"','"queryIntent": ""'),
       html.replace('"name": "Can evidence live outside the F answer?"','"name": "Changed semantic question"'),
-      html.replace('"page": "https://example.com/wacp-example/"','"page": "https://example.com/wrong/"'),
-      html.replace('"designGoals": [','"userQuestion": "What is WACP?",\n  "designGoals": ['),
-      html.replace('data-query="Does WACP claim to know an AI system\'s private fan-out queries?"','data-query="What is a WACP fan-out node?"')
+      html.replace('"page": "https://example.com/warp-example/"','"page": "https://example.com/wrong/"'),
+      html.replace('"designGoals": [','"userQuestion": "What is WARP?",\n  "designGoals": ['),
+      html.replace('data-query="Does WARP claim to know an AI system\'s private fan-out queries?"','data-query="What is a WARP fan-out node?"')
     ]
     for m in mutations:
         try:validate(m)
         except (AssertionError,KeyError,json.JSONDecodeError):pass
         else:raise AssertionError("Negative control incorrectly passed")
-    print("PASS: WACP 6.0 A/F/E HTML, evidence references, WACP map, JSON-LD parity, canonical mapping; 7 negative controls")
+    print("PASS: WARP A/F/E HTML, evidence references, WARP map, JSON-LD parity, canonical mapping; 7 negative controls")
 
 if __name__=="__main__":main()
