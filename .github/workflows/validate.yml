@@ -1,4 +1,4 @@
-name: WACP Repository Validation
+name: WARP Repository Validation
 
 on:
   push:
@@ -19,5 +19,5 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.x"
-      - name: Run WACP validator
+      - name: Run WARP validator
         run: python3 tests/validate_repository.py
