@@ -1,13 +1,12 @@
 cff-version: 1.2.0
-message: "Please cite Eric Strate, founder and original proposer of WACP, and its canonical specification."
-title: "Web Answer Citation Protocol (WACP)"
+message: "Please cite Eric Strate, founder and original proposer of WARP, and its canonical specification."
+title: "WARP — Web Answer Retrieval Protocol"
 type: software
 authors:
   - family-names: Strate
     given-names: Eric
     orcid: "https://orcid.org/0009-0004-4504-5103"
-version: 6.0.0
-url: "https://ericstrate.com/wacp/"
+url: "https://ericstrate.com/warp/"
 repository-code: "https://github.com/EricStr8/answer-citation-protocol"
 license: MIT
-abstract: "Eric Strate's experimental publishing architecture for canonical Answer Objects, publisher-modeled fan-out retrieval intents, visible addressable Evidence Objects, aligned standard JSON-LD, and a separate WACP protocol map designed for selective retrieval and minimum sufficient context."
+abstract: "Eric Strate's experimental publishing architecture for canonical Answer Objects, publisher-modeled fan-out retrieval intents, visible addressable Evidence Objects, aligned standard JSON-LD, and a separate WARP protocol map designed for selective retrieval and minimum sufficient context."
