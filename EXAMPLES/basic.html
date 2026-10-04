@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="canonical" href="https://example.com/wacp-example/">
-<title>WACP 6.0 A → F → E example</title>
+<link rel="canonical" href="https://example.com/warp-example/">
+<title>WARP A → F → E example</title>
 <style>
 .wacp-marker{color:#3366cc;font-family:inherit;font-size:12px;font-weight:400;line-height:1.25;background:transparent;border:0}
 .wacp-fanout{margin:.75rem 0 0 1rem}.wacp-fanout summary{cursor:pointer}
@@ -15,17 +15,17 @@
   "@graph": [
     {
       "@type": "ItemList",
-      "@id": "https://example.com/wacp-example/#answers",
+      "@id": "https://example.com/warp-example/#answers",
       "itemListElement": [
         {
           "@type": "ListItem",
           "position": 1,
           "item": {
             "@type": "DefinedTerm",
-            "@id": "https://example.com/wacp-example/#a1",
-            "name": "What is WACP?",
-            "description": "WACP is Eric Strate's proposed publishing architecture for concise publisher-authored answers, optional fan-out retrieval intents, visible addressable evidence, and aligned machine-readable representations.",
-            "url": "https://example.com/wacp-example/#a1"
+            "@id": "https://example.com/warp-example/#a1",
+            "name": "What is WARP?",
+            "description": "WARP is Eric Strate's proposed publishing architecture for concise publisher-authored answers, optional fan-out retrieval intents, visible addressable evidence, and aligned machine-readable representations.",
+            "url": "https://example.com/warp-example/#a1"
           }
         },
         {
@@ -33,56 +33,55 @@
           "position": 2,
           "item": {
             "@type": "DefinedTerm",
-            "@id": "https://example.com/wacp-example/#a2",
-            "name": "How does WACP 6.0 handle evidence?",
-            "description": "WACP 6.0 gives visible supporting evidence stable E identifiers so an F answer can point to the precise support it needs without requiring that evidence to be duplicated inside the F answer.",
-            "url": "https://example.com/wacp-example/#a2"
+            "@id": "https://example.com/warp-example/#a2",
+            "name": "How does WARP handle evidence?",
+            "description": "WARP gives visible supporting evidence stable E identifiers so an F answer can point to the precise support it needs without requiring that evidence to be duplicated inside the F answer.",
+            "url": "https://example.com/warp-example/#a2"
           }
         }
       ]
     },
     {
       "@type": "Question",
-      "@id": "https://example.com/wacp-example/#a1-f1",
-      "url": "https://example.com/wacp-example/#a1-f1",
-      "name": "What is a WACP fan-out node?",
+      "@id": "https://example.com/warp-example/#a1-f1",
+      "url": "https://example.com/warp-example/#a1-f1",
+      "name": "What is a WARP fan-out node?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "@id": "https://example.com/wacp-example/#a1-f1-answer",
-        "text": "A WACP fan-out node is a publisher-modeled secondary retrieval intent nested beneath a canonical Answer Object."
+        "@id": "https://example.com/warp-example/#a1-f1-answer",
+        "text": "A WARP fan-out node is a publisher-modeled secondary retrieval intent nested beneath a canonical Answer Object."
       }
     },
     {
       "@type": "Question",
-      "@id": "https://example.com/wacp-example/#a1-f2",
-      "url": "https://example.com/wacp-example/#a1-f2",
-      "name": "Does WACP claim to know an AI system's private fan-out queries?",
+      "@id": "https://example.com/warp-example/#a1-f2",
+      "url": "https://example.com/warp-example/#a1-f2",
+      "name": "Does WARP claim to know an AI system's private fan-out queries?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "@id": "https://example.com/wacp-example/#a1-f2-answer",
-        "text": "No. WACP F nodes are publisher-authored retrieval hypotheses and do not claim to reproduce private system queries or ranking logic."
+        "@id": "https://example.com/warp-example/#a1-f2-answer",
+        "text": "No. WARP F nodes are publisher-authored retrieval hypotheses and do not claim to reproduce private system queries or ranking logic."
       }
     },
     {
       "@type": "Question",
-      "@id": "https://example.com/wacp-example/#a2-f1",
-      "url": "https://example.com/wacp-example/#a2-f1",
+      "@id": "https://example.com/warp-example/#a2-f1",
+      "url": "https://example.com/warp-example/#a2-f1",
       "name": "Can evidence live outside the F answer?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "@id": "https://example.com/wacp-example/#a2-f1-answer",
+        "@id": "https://example.com/warp-example/#a2-f1-answer",
         "text": "Yes. An E node can remain in normal visible supporting content and be referenced by stable ID from the F answer."
       }
     }
   ]
 }
 </script>
-<script type="application/json" id="wacp6-map">
+<script type="application/json" id="warp-map">
 {
-  "protocol": "WACP",
-  "version": "6.0",
-  "spec": "https://ericstrate.com/wacp/",
-  "page": "https://example.com/wacp-example/",
+  "protocol": "WARP",
+  "spec": "https://ericstrate.com/warp/",
+  "page": "https://example.com/warp-example/",
   "terminology": {
     "A": "canonical publisher answer",
     "F": "publisher-modeled fan-out retrieval intent",
@@ -96,8 +95,8 @@
       "supportSelector": "#support-a1",
       "queryIntent": "protocol definition",
       "fanOut": [
-        {"id":"a1-f1","question":"What is a WACP fan-out node?","answerSelector":"#a1-f1-answer","evidence":["#a1-f1-e1"]},
-        {"id":"a1-f2","question":"Does WACP claim to know an AI system's private fan-out queries?","answerSelector":"#a1-f2-answer","evidence":["#a1-f2-e1"]}
+        {"id":"a1-f1","question":"What is a WARP fan-out node?","answerSelector":"#a1-f1-answer","evidence":["#a1-f1-e1"]},
+        {"id":"a1-f2","question":"Does WARP claim to know an AI system's private fan-out queries?","answerSelector":"#a1-f2-answer","evidence":["#a1-f2-e1"]}
       ]
     },
     {
@@ -115,34 +114,34 @@
 </head>
 <body>
 <main>
-<article data-wacp-document="true" data-wacp-version="6.0" data-primary-intent="protocol definition">
-<h1>WACP 6.0 A → F → E example</h1>
-<p>By <a rel="author" href="https://ericstrate.com/">Eric Strate</a>, WACP founder and original proposer. <a href="https://ericstrate.com/wacp/">Canonical specification and original test bed</a>.</p>
-<section data-wacp-section="true" data-query-role="primary">
-<div id="a1" data-wacp="answer" data-wacp-version="6.0" data-answer-id="a1" data-support-ref="#support-a1">
+<article data-warp-document="true" data-primary-intent="protocol definition">
+<h1>WARP A → F → E example</h1>
+<p>By <a rel="author" href="https://ericstrate.com/">Eric Strate</a>, WARP founder and original proposer. <a href="https://ericstrate.com/warp/">Canonical specification and original test bed</a>.</p>
+<section data-warp-section="true" data-query-role="primary">
+<div id="a1" data-warp="answer" data-answer-id="a1" data-support-ref="#support-a1">
 <details class="wacp-citation"><summary class="wacp-marker">[a1]</summary>
-<p data-wacp-answer-text="true">WACP is Eric Strate's proposed publishing architecture for concise publisher-authored answers, optional fan-out retrieval intents, visible addressable evidence, and aligned machine-readable representations.</p>
+<p data-warp-answer-text="true">WARP is Eric Strate's proposed publishing architecture for concise publisher-authored answers, optional fan-out retrieval intents, visible addressable evidence, and aligned machine-readable representations.</p>
 <div class="wacp-fanout">
-<details class="wacp-fanout-item" id="a1-f1" data-wacp="fanout" data-parent-answer="a1" data-query="What is a WACP fan-out node?" data-evidence-ref="#a1-f1-e1"><summary>[f1] What is a WACP fan-out node?</summary><div id="a1-f1-answer"><p data-wacp-fanout-answer-text="true">A WACP fan-out node is a publisher-modeled secondary retrieval intent nested beneath a canonical Answer Object.</p></div><a href="#a1-f1-e1">Evidence ↗</a></details>
-<details class="wacp-fanout-item" id="a1-f2" data-wacp="fanout" data-parent-answer="a1" data-query="Does WACP claim to know an AI system's private fan-out queries?" data-evidence-ref="#a1-f2-e1"><summary>[f2] Does WACP claim to know an AI system's private fan-out queries?</summary><div id="a1-f2-answer"><p data-wacp-fanout-answer-text="true">No. WACP F nodes are publisher-authored retrieval hypotheses and do not claim to reproduce private system queries or ranking logic.</p></div><a href="#a1-f2-e1">Evidence ↗</a></details>
+<details class="wacp-fanout-item" id="a1-f1" data-warp="fanout" data-parent-answer="a1" data-query="What is a WARP fan-out node?" data-evidence-ref="#a1-f1-e1"><summary>[f1] What is a WARP fan-out node?</summary><div id="a1-f1-answer"><p data-warp-fanout-answer-text="true">A WARP fan-out node is a publisher-modeled secondary retrieval intent nested beneath a canonical Answer Object.</p></div><a href="#a1-f1-e1">Evidence ↗</a></details>
+<details class="wacp-fanout-item" id="a1-f2" data-warp="fanout" data-parent-answer="a1" data-query="Does WARP claim to know an AI system's private fan-out queries?" data-evidence-ref="#a1-f2-e1"><summary>[f2] Does WARP claim to know an AI system's private fan-out queries?</summary><div id="a1-f2-answer"><p data-warp-fanout-answer-text="true">No. WARP F nodes are publisher-authored retrieval hypotheses and do not claim to reproduce private system queries or ranking logic.</p></div><a href="#a1-f2-e1">Evidence ↗</a></details>
 </div><a href="#a1">Link to answer [a1]</a></details>
 </div>
-<div id="support-a1" data-wacp-support="true" data-supports-answer="a1">
-<h2>What is WACP?</h2>
-<p id="a1-f1-e1" data-wacp-evidence="true" data-evidence-for="a1-f1">F nodes represent distinct secondary information needs that the publisher has prepared the page to resolve.</p>
-<p id="a1-f2-e1" data-wacp-evidence="true" data-evidence-for="a1-f2">The F layer is publisher-authored metadata. It does not claim knowledge of a search engine's or language model's private retrieval queries or ranking logic.</p>
+<div id="support-a1" data-warp-support="true" data-supports-answer="a1">
+<h2>What is WARP?</h2>
+<p id="a1-f1-e1" data-warp-evidence="true" data-evidence-for="a1-f1">F nodes represent distinct secondary information needs that the publisher has prepared the page to resolve.</p>
+<p id="a1-f2-e1" data-warp-evidence="true" data-evidence-for="a1-f2">The F layer is publisher-authored metadata. It does not claim knowledge of a search engine's or language model's private retrieval queries or ranking logic.</p>
 </div>
 </section>
-<section data-wacp-section="true" data-query-role="supporting">
-<div id="a2" data-wacp="answer" data-wacp-version="6.0" data-answer-id="a2" data-support-ref="#support-a2">
+<section data-warp-section="true" data-query-role="supporting">
+<div id="a2" data-warp="answer" data-answer-id="a2" data-support-ref="#support-a2">
 <details class="wacp-citation"><summary class="wacp-marker">[a2]</summary>
-<p data-wacp-answer-text="true">WACP 6.0 gives visible supporting evidence stable E identifiers so an F answer can point to the precise support it needs without requiring that evidence to be duplicated inside the F answer.</p>
-<div class="wacp-fanout"><details class="wacp-fanout-item" id="a2-f1" data-wacp="fanout" data-parent-answer="a2" data-query="Can evidence live outside the F answer?" data-evidence-ref="#a2-f1-e1"><summary>[f1] Can evidence live outside the F answer?</summary><div id="a2-f1-answer"><p data-wacp-fanout-answer-text="true">Yes. An E node can remain in normal visible supporting content and be referenced by stable ID from the F answer.</p></div><a href="#a2-f1-e1">Evidence ↗</a></details></div>
+<p data-warp-answer-text="true">WARP gives visible supporting evidence stable E identifiers so an F answer can point to the precise support it needs without requiring that evidence to be duplicated inside the F answer.</p>
+<div class="wacp-fanout"><details class="wacp-fanout-item" id="a2-f1" data-warp="fanout" data-parent-answer="a2" data-query="Can evidence live outside the F answer?" data-evidence-ref="#a2-f1-e1"><summary>[f1] Can evidence live outside the F answer?</summary><div id="a2-f1-answer"><p data-warp-fanout-answer-text="true">Yes. An E node can remain in normal visible supporting content and be referenced by stable ID from the F answer.</p></div><a href="#a2-f1-e1">Evidence ↗</a></details></div>
 <a href="#a2">Link to answer [a2]</a></details>
 </div>
-<div id="support-a2" data-wacp-support="true" data-supports-answer="a2">
+<div id="support-a2" data-warp-support="true" data-supports-answer="a2">
 <h2>Evidence stays visible and independently addressable</h2>
-<p id="a2-f1-e1" data-wacp-evidence="true" data-evidence-for="a2-f1">An Evidence Object is a visible DOM element with its own stable ID. It can live in ordinary supporting content rather than being duplicated inside the concise F answer.</p>
+<p id="a2-f1-e1" data-warp-evidence="true" data-evidence-for="a2-f1">An Evidence Object is a visible DOM element with its own stable ID. It can live in ordinary supporting content rather than being duplicated inside the concise F answer.</p>
 </div>
 </section>
 </article>
